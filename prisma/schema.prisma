@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String   @unique
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  departments UserDepartment[]
+}
+
+model Department {
+  id      Int         @id @default(autoincrement())
+  name    String
+
+  users UserDepartment[]
+}
+
+
+model UserDepartment {
+  user_id        Int
+  department_id  Int
+
+  user        User           @relation(fields:[user_id], references:[id], onDelete:Cascade)
+  department  Department     @relation(fields:[department_id], references:[id], onDelete:Cascade)
+
+  @@id([user_id, department_id]) //no duplicate user in same dept
+}
