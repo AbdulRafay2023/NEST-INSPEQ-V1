@@ -5,13 +5,13 @@ import { AppService } from './app.service';
 import { DatabaseModule } from './database/database/database.module';
 import { UsersController } from './api-v1/users/users.controller';
 import { UsersService } from './api-v1/users/users.service';
+import { ApiV1Module } from './api-v1/api-v1.module';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
 @Module({
   imports: [
-    // Distributed tracing, auto-correlated logs, request/job metrics, error
-    // telemetry, alarms, and more — out of the box. Sign up at https://observe.nestjs.com
+    ApiV1Module,
     ObserveModule.forRoot({
       appKey: 'YOUR_APP_KEY',
       appSecret: 'YOUR_APP_SECRET',
@@ -20,7 +20,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     DatabaseModule,
     AppModule,
   ],
-  controllers: [AppController, UsersController],
-  providers: [AppService,UsersService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
